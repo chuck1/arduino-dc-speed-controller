@@ -1,15 +1,42 @@
+#include <SoftwareSerial.h>
 
 #define enableA 9
 #define in1 6
 #define in2 7
-#define buttonDown 5
-#define buttonUp 4
+#define buttonDown 4
+#define buttonUp 5
+
+# define BAUD
+
+const byte pinRx = 2;
+const byte pinTx = 3;
+
+// set up a new serial object
+SoftwareSerial serial1 (rxPin, txPin);
 
 
 int rotDirection = 0;
 int pressed = false;
 
+void wifi_read() {
+    while(true) {
+        char c = serial1.read();
+        if(c == -1) return;
+        Serial.write(c);
+    }
+}
+
+void wifi_setup() {
+    
+    serial1.write("AT+CWMODE=3");
+    
+}
+
 void setup() {
+    Serial.begin(BAUD);
+    
+    wifi_setup();
+    
     pinMode(enableA, OUTPUT);
     pinMode(in1, OUTPUT);
     pinMode(in2, OUTPUT);
